@@ -45,15 +45,17 @@ if (window.location.pathname.includes('dashboard.html')) {
 
 
 //for tasks.html
-document.addEventListener("DOMContentLoaded", function() {
+if (window.location.pathname.includes('tasks.html')) {
   let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
-  const taskInput = document.getElementById("taskInput");
-  const addTaskBtn = document.getElementById("addTaskBtn");
-  const taskListElement = document.getElementById("taskList");
-
+  // Function to render tasks in the table
   function renderTasks() {
-    taskListElement.innerHTML = "";
+    const taskListElement = document.getElementById("taskList");
+    taskListElement.innerHTML = ""; // Clear existing tasks
+
+    // Log the tasks to see if it's being populated correctly
+    console.log('Tasks: ', tasks); 
+
     tasks.forEach((task, index) => {
       const row = document.createElement("tr");
       row.innerHTML = `
@@ -64,31 +66,28 @@ document.addEventListener("DOMContentLoaded", function() {
       taskListElement.appendChild(row);
     });
 
-    document.querySelectorAll(".delete-btn").forEach(button => {
-      button.addEventListener("click", function(e) {
-        const index = e.target.getAttribute("data-index");
-        tasks.splice(index, 1);
-        localStorage.setItem("tasks", JSON.stringify(tasks));
-        renderTasks();
-      });
+    const deleteButtons = document.querySelectorAll(".delete-btn");
+    deleteButtons.forEach(button => {
+      button.addEventListener("click", deleteTask);
     });
   }
 
-  addTaskBtn.addEventListener("click", function() {
+  // to add a new task
+  function addTask() {
+    const taskInput = document.getElementById("taskInput");
     const newTask = taskInput.value.trim();
+
     if (newTask) {
-      tasks.push(newTask);
-      localStorage.setItem("tasks", JSON.stringify(tasks));
-      taskInput.value = "";
-      renderTasks();
-    } else {
-      alert("Please enter a valid task!");
+      tasks.push(newTask); // Add the new task to the tasks array
+      localStorage.setItem("tasks", JSON.stringify(tasks)); // keep the tasks array in localStorage
+      taskInput.value = ""; 
+      renderTasks(); 
+    } else 
+
+    {
+      console.log("Please enter a valid task!"); 
     }
-  });
-
-  renderTasks();
-});
-
+  }
 
   // Function to delete a task
   function deleteTask(event) {
