@@ -45,17 +45,23 @@ if (window.location.pathname.includes('dashboard.html')) {
 
 
 //for tasks.html
-if (window.location.pathname.includes('tasks.html')) {
+// ================= Tasks Page =================
+const taskListElement = document.getElementById("taskList");
+const addTaskBtn = document.getElementById("addTaskBtn");
+const taskInput = document.getElementById("taskInput");
+
+if (taskListElement && addTaskBtn && taskInput) {
   let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
-  // Function to render tasks in the table
+  function updateDashboardData() {
+    const completedTasks = JSON.parse(localStorage.getItem("completedTasks")) || [];
+    const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    localStorage.setItem("totalTasks", tasks.length + completedTasks.length);
+    localStorage.setItem("completedTasksCount", completedTasks.length);
+  }
+
   function renderTasks() {
-    const taskListElement = document.getElementById("taskList");
-    taskListElement.innerHTML = ""; // Clear existing tasks
-
-    // Log the tasks to see if it's being populated correctly
-    console.log('Tasks: ', tasks); 
-
+    taskListElement.innerHTML = "";
     tasks.forEach((task, index) => {
       const row = document.createElement("tr");
       row.innerHTML = `
@@ -66,60 +72,54 @@ if (window.location.pathname.includes('tasks.html')) {
       taskListElement.appendChild(row);
     });
 
-    const deleteButtons = document.querySelectorAll(".delete-btn");
-    deleteButtons.forEach(button => {
+    document.querySelectorAll(".delete-btn").forEach(button => {
       button.addEventListener("click", deleteTask);
     });
   }
 
-  // to add a new task
   function addTask() {
-    const taskInput = document.getElementById("taskInput");
     const newTask = taskInput.value.trim();
-
     if (newTask) {
-      tasks.push(newTask); // Add the new task to the tasks array
-      localStorage.setItem("tasks", JSON.stringify(tasks)); // keep the tasks array in localStorage
-      taskInput.value = ""; 
-      renderTasks(); 
-    } else 
-
-    {
-      console.log("Please enter a valid task!"); 
+      tasks.push(newTask);
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+      taskInput.value = "";
+      renderTasks();
+      updateDashboardData();
+    } else {
+      console.log("Please enter a valid task!");
     }
   }
 
-  // Function to delete a task
   function deleteTask(event) {
-  const index = event.target.getAttribute("data-index");
-  tasks.splice(index, 1); //remove tasks
-  localStorage.setItem("tasks", JSON.stringify(tasks)); 
-  renderTasks();
+    const index = event.target.getAttribute("data-index");
+    tasks.splice(index, 1);
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+    renderTasks();
+    updateDashboardData();
   }
 
-  document.getElementById("addTaskBtn").addEventListener("click", addTask);
+  addTaskBtn.addEventListener("click", addTask);
   renderTasks();
 }
 
+// ================= Completed Page =================
+const completedTaskList = document.getElementById("taskList");
 
-
-//for completed.html
-if (window.location.pathname.includes('completed.html')) {
-  // Retrieve the data about tasks and completed tasks from the localStorage
+if (completedTaskList) {
   let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
   let completedTasks = JSON.parse(localStorage.getItem("completedTasks")) || [];
 
-  // Function to render both total and completed tasks in the same table
-  function renderTasks() {
-    const taskListElement = document.getElementById("taskList");
-    taskListElement.innerHTML = ""; // this wll clear the existing list
-    
-    [...tasks, ...completedTasks].forEach((task, index) => 
-      {
-      // this will Check if the task is completed
-      const isCompleted = completedTasks.includes(task); 
-      const row = document.createElement("tr");
+  function updateDashboardData() {
+    localStorage.setItem("totalTasks", tasks.length + completedTasks.length);
+    localStorage.setItem("completedTasksCount", completedTasks.length);
+  }
 
+  function renderTasks() {
+    completedTaskList.innerHTML = "";
+
+    [...tasks, ...completedTasks].forEach((task, index) => {
+      const isCompleted = completedTasks.includes(task);
+      const row = document.createElement("tr");
       row.innerHTML = `
         <td>${index + 1}</td>
         <td>${task}</td>
@@ -129,53 +129,36 @@ if (window.location.pathname.includes('completed.html')) {
             `<button class="btn btn-success complete-btn" data-task="${task}">Mark as Completed</button>`}
         </td>
       `;
-      taskListElement.appendChild(row);
+      completedTaskList.appendChild(row);
     });
 
-    document.querySelectorAll(".complete-btn").forEach(button => 
-    {
-      button.addEventListener("click", markAsCompleted);
-    });
-
-    document.querySelectorAll(".undo-btn").forEach(button =>
-    {
-      button.addEventListener("click", markAsIncomplete);
-    });
+    document.querySelectorAll(".complete-btn").forEach(btn => btn.addEventListener("click", markAsCompleted));
+    document.querySelectorAll(".undo-btn").forEach(btn => btn.addEventListener("click", markAsIncomplete));
   }
 
-  //  mark a tasks that i add as completed
   function markAsCompleted(event) {
     const task = event.target.getAttribute("data-task");
-    tasks = tasks.filter(t => t !== task); // Remove from tasks
-    completedTasks.push(task); // and it will add to completed tasks
-    localStorage.setItem("tasks", JSON.stringify(tasks)); 
-    localStorage.setItem("completedTasks", JSON.stringify(completedTasks)); 
-    renderTasks(); 
-    updateDashboardData(); 
-  }
-
-  // Function to mark a task as incomplete in the table
-  function markAsIncomplete(event) {
-    const task = event.target.getAttribute("data-task");
-    completedTasks = completedTasks.filter(t => t !== task); // Remove from completed tasks
-    tasks.push(task); s
-    localStorage.setItem("tasks", JSON.stringify(tasks)); 
-    localStorage.setItem("completedTasks", JSON.stringify(completedTasks));  
-    renderTasks(); 
+    tasks = tasks.filter(t => t !== task);
+    completedTasks.push(task);
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+    localStorage.setItem("completedTasks", JSON.stringify(completedTasks));
+    renderTasks();
     updateDashboardData();
   }
 
-  // Function to update dashboard data
-  function updateDashboardData() {
-    const totalTasks = tasks.length + completedTasks.length;
-    const completedTaskCount = completedTasks.length;
-
-    localStorage.setItem("totalTasks", totalTasks);
-    localStorage.setItem("completedTasksCount", completedTaskCount);
-    
+  function markAsIncomplete(event) {
+    const task = event.target.getAttribute("data-task");
+    completedTasks = completedTasks.filter(t => t !== task);
+    tasks.push(task);
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+    localStorage.setItem("completedTasks", JSON.stringify(completedTasks));
+    renderTasks();
+    updateDashboardData();
   }
+
   renderTasks();
 }
+
 
 
 
