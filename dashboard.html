@@ -1,132 +1,57 @@
 <!DOCTYPE html>
+<html lang="en">
 <head>
-
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard - Task Manager</title>
+  <title>Dashboard</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="css/style.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link href="https://cdn.lineicons.com/5.0/lineicons.css" rel="stylesheet">
 </head>
-
-
 <body>
-<!--this is for my background-->
- <video id="bg-video" autoplay muted loop playsinline>
-<source src="img/tmbckg2.mp4" type="video/mp4">
-</video>
+  <video id="bg-video" autoplay muted loop playsinline>
+    <source src="img/tmbckg2.mp4" type="video/mp4">
+  </video>
 
-  <!-- Navigation Bar -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-  <a class="navbar-brand" href="#"> <img src="img/tmlogo.webp" alt="logo" class="img-fluid" style="max-width: 60px; margin-left: 20px;"> <b>TaskMate</b></a>
-  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+    <a class="navbar-brand" href="#">
+      <img src="img/tmlogo.webp" alt="logo" class="img-fluid" style="max-width: 60px; margin-left: 20px;">
+      <b>TaskMate</b>
+    </a>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link active" href="dashboard.html">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" href="tasks.html">Tasks</a></li>
+        <li class="nav-item"><a class="nav-link" href="completed.html">Completed Tasks</a></li>
+        <li class="nav-item"><a class="nav-link" href="index.html">Logout</a></li>
+      </ul>
+    </div>
+  </nav>
 
-  <div class="collapse navbar-collapse" id="navbarNav">
-
-    <ul class="navbar-nav ms-auto">
-     <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
-     <li class="nav-item"><a class="nav-link" href="tasks.html">Tasks</a></li>
-     <li class="nav-item"><a class="nav-link" href="completed.html">Completed Tasks</a>
-     </li><li class="nav-item"><a class="nav-link" href="index.html">Logout</a></li>
-
-    </ul>
-  </div>
-</nav>
-
-       
-    <section class="info">
-
-     <h3>Why it matters?</h3>
-     <!-- nantiii letak icon balikkkkkk sblm submit!!! -->
-    <i class="lni lnis-message-3-text"></i>
-    <p>Task management is crucial for maintaining organization, focus, and productivity. It involves organizing, prioritizing, and tracking tasks to ensure they are completed on time and efficiently. Below is your count of tasks: </p>
-
-    </section>
-
-  <!-- Dashboard Content -->
   <div class="container my-5">
     <h2 class="text-center mb-4">Dashboard</h2>
-
-    <!--rotal -->
     <div class="row">
-     <div class="col-md-6">
-       <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Total Tasks</h5>
-          <p class="card-text" id="totalTasks">Loading...</p> 
-         </div>
-       </div>
-      </div>
- <!--completed -->
       <div class="col-md-6">
         <div class="card">
-         <div class="card-body">
-            <h5 class="card-title">Completed Tasks</h5>
-            <p class="card-text" id="completedTasks">Loading...</p>
+          <div class="card-body">
+            <h5 class="card-title">Total Tasks</h5>
+            <p class="card-text" id="totalTasks">0</p>
+          </div>
         </div>
-     </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Completed Tasks</h5>
+            <p class="card-text" id="completedTasks">0</p>
+          </div>
+        </div>
+      </div>
     </div>
-    </div>
-
-  <!-- Visualization: Task Completion Chart -->
-  <div class="mt-5">
-  <canvas id="taskChart"> </canvas>
+    <canvas id="taskChart"></canvas>
   </div>
-  </div>
-  
 
-  <!-- Chart area on js -->
-  <script>
-    
-    let totalTasks = localStorage.getItem("totalTasks") || 0;
-    let completedTasks = localStorage.getItem("completedTasksCount") || 0;
-
-    
-    document.getElementById("totalTasks").innerText = totalTasks;
-    document.getElementById("completedTasks").innerText = completedTasks;
-
-   
-    var ctx = document.getElementById('taskChart').getContext('2d');
-    var taskChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-      labels: ['Total Tasks', 'Completed Tasks'],
-      datasets: [{
-      label: 'Tasks',
-      data: [totalTasks, completedTasks],  
-      backgroundColor: ['#007bff', '#28a745'], 
-      borderColor: ['#007bff', '#28a745'],
-      borderWidth: 1
-        }]
-      }
-    });
-  </script>
-
-  <!-- Link to Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
   <script src="js/app.js"></script>
-
-
-   <section class="scroll-image">
-     <h3>scroll for more Information</h3>
-    </section>
-
-  <div class="scroll-container">
-  <img src="img/q1.png" alt="quote 1">
-  <img src="img/q2.png" alt="quote 2">
-  <img src="img/q3.png" alt="quote 3">
-  <img src="img/q4.png" alt="quote 4">
-</div>
-
-  
-<footer>
-<p>2025 Zaireeq All Rights Reserved.</p>
-</footer>
-
 </body>
-
-
 </html>
+
