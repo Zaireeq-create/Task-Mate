@@ -1,18 +1,18 @@
-// Login Page 
+//for login.html
 document.getElementById("loginForm").addEventListener("submit", function(e) {
-    e.preventDefault();
+  e.preventDefault();
 
-    const username = document.getElementById("username").value.trim();
-    const password = document.getElementById("password").value.trim();
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
 
-    const validUsername = "user";
-    const validPassword = "user123";
+  const validUsername = "user";
+  const validPassword = "user123";
 
-    if (username === validUsername && password === validPassword) {
-        window.location.href = "dashboard.html";
-    } else {
-        document.getElementById("error-message").style.display = "block";
-    }
+  if (username === validUsername && password === validPassword) {
+    window.location.href = "dashboard.html"; 
+  } else {
+    document.getElementById("error-message").style.display = "block";
+  }
 });
 
 
@@ -176,6 +176,7 @@ if (window.location.pathname.includes('completed.html')) {
   }
   renderTasks();
 }
+
 
 
 
