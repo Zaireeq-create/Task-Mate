@@ -1,112 +1,181 @@
-// ================= Common Data =================
-let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-let completedTasks = JSON.parse(localStorage.getItem("completedTasks")) || [];
+//for login.html
+document.getElementById("loginForm").addEventListener("submit", function(e) {
+  e.preventDefault();
 
-// ================= Dashboard Data =================
-function updateDashboardData() {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-    localStorage.setItem("completedTasks", JSON.stringify(completedTasks));
-    localStorage.setItem("totalTasks", tasks.length + completedTasks.length);
-    localStorage.setItem("completedTasksCount", completedTasks.length);
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
+
+  const validUsername = "user";
+  const validPassword = "user123";
+
+  if (username === validUsername && password === validPassword) {
+    window.location.href = "dashboard.html"; 
+  } else {
+    document.getElementById("error-message").style.display = "block";
+  }
+});
+
+
+//for dashboard.html
+if (window.location.pathname.includes('dashboard.html')) {
+  // Retrieve total tasks and completed tasks count from localStorage
+  let totalTasks = localStorage.getItem("totalTasks") || 0;
+  let completedTasks = localStorage.getItem("completedTasksCount") || 0;
+
+  // Update the text content for total tasks and completed tasks
+  document.getElementById("totalTasks").innerText = totalTasks;
+  document.getElementById("completedTasks").innerText = completedTasks;
+
+  //this is a bar chart using Chart.js
+  var ctx = document.getElementById('taskChart').getContext('2d');
+  var taskChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Completed', 'Pending'],
+      datasets: [{
+        label: 'Tasks',
+        data: [completedTasks, totalTasks - completedTasks],  // Completed vs total tasks
+        backgroundColor: ['#28a745', '#0056b3;'], // Green for completed anf red for total
+        borderColor: ['#28a745', '#0056b3;'],
+        borderWidth: 1
+      }]
+    }
+  });
 }
 
-// ================= Tasks Page =================
-const taskListElement = document.getElementById("taskList");
-const addTaskBtn = document.getElementById("addTaskBtn");
-const taskInput = document.getElementById("taskInput");
 
-if (taskListElement && addTaskBtn && taskInput) {
+//for tasks.html
+if (window.location.pathname.includes('tasks.html')) {
+  let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
-    function renderTasks() {
-        taskListElement.innerHTML = "";
-        tasks.forEach((task, index) => {
-            const row = document.createElement("tr");
-            row.innerHTML = `
-                <td>${index + 1}</td>
-                <td>${task}</td>
-                <td>
-                    <button class="btn btn-danger delete-btn" data-index="${index}">Delete</button>
-                </td>
-            `;
-            taskListElement.appendChild(row);
-        });
+  // Function to render tasks in the table
+  function renderTasks() {
+    const taskListElement = document.getElementById("taskList");
+    taskListElement.innerHTML = ""; // Clear existing tasks
 
-        document.querySelectorAll(".delete-btn").forEach(btn => {
-            btn.addEventListener("click", deleteTask);
-        });
+    // Log the tasks to see if it's being populated correctly
+    console.log('Tasks: ', tasks); 
+
+    tasks.forEach((task, index) => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${index + 1}</td>
+        <td>${task}</td>
+        <td><button class="btn btn-danger delete-btn" data-index="${index}">Delete</button></td>
+      `;
+      taskListElement.appendChild(row);
+    });
+
+    const deleteButtons = document.querySelectorAll(".delete-btn");
+    deleteButtons.forEach(button => {
+      button.addEventListener("click", deleteTask);
+    });
+  }
+
+  // to add a new task
+  function addTask() {
+    const taskInput = document.getElementById("taskInput");
+    const newTask = taskInput.value.trim();
+
+    if (newTask) {
+      tasks.push(newTask); // Add the new task to the tasks array
+      localStorage.setItem("tasks", JSON.stringify(tasks)); // keep the tasks array in localStorage
+      taskInput.value = ""; 
+      renderTasks(); 
+    } else 
+
+    {
+      console.log("Please enter a valid task!"); 
     }
+  }
 
-    function addTask() {
-        const newTask = taskInput.value.trim();
-        if (newTask) {
-            tasks.push(newTask);
-            taskInput.value = "";
-            updateDashboardData();
-            renderTasks();
-        } else {
-            alert("Please enter a valid task!");
-        }
-    }
+  // Function to delete a task
+  function deleteTask(event) {
+  const index = event.target.getAttribute("data-index");
+  tasks.splice(index, 1); //remove tasks
+  localStorage.setItem("tasks", JSON.stringify(tasks)); 
+  renderTasks();
+  }
 
-    function deleteTask(event) {
-        const index = event.target.getAttribute("data-index");
-        tasks.splice(index, 1);
-        updateDashboardData();
-        renderTasks();
-    }
-
-    addTaskBtn.addEventListener("click", addTask);
-    renderTasks();
+  document.getElementById("addTaskBtn").addEventListener("click", addTask);
+  renderTasks();
 }
 
-// ================= Completed Page =================
-const completedTaskList = document.getElementById("taskListCompleted");
 
-if (completedTaskList) {
 
-    function renderCompletedTasks() {
-        completedTaskList.innerHTML = "";
-        [...tasks, ...completedTasks].forEach((task, index) => {
-            const isCompleted = completedTasks.includes(task);
-            const row = document.createElement("tr");
-            row.innerHTML = `
-                <td>${index + 1}</td>
-                <td>${task}</td>
-                <td>
-                    ${isCompleted 
-                        ? `<button class="btn btn-danger undo-btn" data-task="${task}">Mark as Incomplete</button>` 
-                        : `<button class="btn btn-success complete-btn" data-task="${task}">Mark as Completed</button>`
-                    }
-                </td>
-            `;
-            completedTaskList.appendChild(row);
-        });
+//for completed.html
+if (window.location.pathname.includes('completed.html')) {
+  // Retrieve the data about tasks and completed tasks from the localStorage
+  let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+  let completedTasks = JSON.parse(localStorage.getItem("completedTasks")) || [];
 
-        document.querySelectorAll(".complete-btn").forEach(btn => btn.addEventListener("click", markAsCompleted));
-        document.querySelectorAll(".undo-btn").forEach(btn => btn.addEventListener("click", markAsIncomplete));
-    }
+  // Function to render both total and completed tasks in the same table
+  function renderTasks() {
+    const taskListElement = document.getElementById("taskList");
+    taskListElement.innerHTML = ""; // this wll clear the existing list
+    
+    [...tasks, ...completedTasks].forEach((task, index) => 
+      {
+      // this will Check if the task is completed
+      const isCompleted = completedTasks.includes(task); 
+      const row = document.createElement("tr");
 
-    function markAsCompleted(event) {
-        const task = event.target.getAttribute("data-task");
-        tasks = tasks.filter(t => t !== task);
-        completedTasks.push(task);
-        updateDashboardData();
-        renderCompletedTasks();
-    }
+      row.innerHTML = `
+        <td>${index + 1}</td>
+        <td>${task}</td>
+        <td>
+          ${isCompleted ? 
+            `<button class="btn btn-danger undo-btn" data-task="${task}">Mark as Incomplete</button>` :
+            `<button class="btn btn-success complete-btn" data-task="${task}">Mark as Completed</button>`}
+        </td>
+      `;
+      taskListElement.appendChild(row);
+    });
 
-    function markAsIncomplete(event) {
-        const task = event.target.getAttribute("data-task");
-        completedTasks = completedTasks.filter(t => t !== task);
-        tasks.push(task);
-        updateDashboardData();
-        renderCompletedTasks();
-    }
+    document.querySelectorAll(".complete-btn").forEach(button => 
+    {
+      button.addEventListener("click", markAsCompleted);
+    });
 
-    renderCompletedTasks();
+    document.querySelectorAll(".undo-btn").forEach(button =>
+    {
+      button.addEventListener("click", markAsIncomplete);
+    });
+  }
+
+  //  mark a tasks that i add as completed
+  function markAsCompleted(event) {
+    const task = event.target.getAttribute("data-task");
+    tasks = tasks.filter(t => t !== task); // Remove from tasks
+    completedTasks.push(task); // and it will add to completed tasks
+    localStorage.setItem("tasks", JSON.stringify(tasks)); 
+    localStorage.setItem("completedTasks", JSON.stringify(completedTasks)); 
+    renderTasks(); 
+    updateDashboardData(); 
+  }
+
+  // Function to mark a task as incomplete in the table
+  function markAsIncomplete(event) {
+    const task = event.target.getAttribute("data-task");
+    completedTasks = completedTasks.filter(t => t !== task); // Remove from completed tasks
+    tasks.push(task); s
+    localStorage.setItem("tasks", JSON.stringify(tasks)); 
+    localStorage.setItem("completedTasks", JSON.stringify(completedTasks));  
+    renderTasks(); 
+    updateDashboardData();
+  }
+
+  // Function to update dashboard data
+  function updateDashboardData() {
+    const totalTasks = tasks.length + completedTasks.length;
+    const completedTaskCount = completedTasks.length;
+
+    localStorage.setItem("totalTasks", totalTasks);
+    localStorage.setItem("completedTasksCount", completedTaskCount);
+    
+  }
+  renderTasks();
 }
-
-// ================= Initial Dashboard Update =================
-updateDashboardData();
 
 
 
