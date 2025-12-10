@@ -1,24 +1,19 @@
 // Login Page 
-if (window.location.pathname.includes('index.html')) {
-  document.getElementById("loginForm").addEventListener("submit", function(e) {
+document.getElementById("loginForm").addEventListener("submit", function(e) {
     e.preventDefault();
-    // Get the username and password values
-    const username = document.getElementById("username").value;
-    const password = document.getElementById("password").value;
-    // Hardcoded password and username
+
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value.trim();
+
     const validUsername = "user";
     const validPassword = "user123";
 
-    // Check if the entered code is match with the password that i already set
     if (username === validUsername && password === validPassword) {
-      //move to dashboard page on successful login
-      window.location.href = "dashboard.html"; // Redirect to the actual dashboard
+        window.location.href = "dashboard.html";
     } else {
-      // Show the error message if the password are incorrect
-      document.getElementById("error-message").style.display = "block";
+        document.getElementById("error-message").style.display = "block";
     }
-  });
-}
+});
 
 
 //for dashboard.html
@@ -181,5 +176,6 @@ if (window.location.pathname.includes('completed.html')) {
   }
   renderTasks();
 }
+
 
 
