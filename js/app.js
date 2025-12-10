@@ -94,7 +94,7 @@ if (window.location.pathname.includes('tasks.html')) {
 
 // ================= Completed Page =================
 if (window.location.pathname.includes('completed.html')) {
-    const completedTaskList = document.getElementById("taskList"); // keep as completed page id
+   const completedTaskList = document.getElementById("completedTaskList");
     function renderCompletedTasks() {
         completedTaskList.innerHTML = "";
         [...tasks, ...completedTasks].forEach((task, index) => {
@@ -135,6 +135,7 @@ if (window.location.pathname.includes('completed.html')) {
 
     renderCompletedTasks();
 }
+
 
 
 
