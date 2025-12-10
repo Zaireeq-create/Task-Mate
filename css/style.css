@@ -291,8 +291,9 @@ canvas
 /* Images */
 .scroll-container img 
 {
-  width: 700px;
-  height: 420px;
+  width: 90vw; 
+  max-width: 700px;
+  height: auto;
   object-fit: cover;
   display: inline-block;
   margin-right: 20px;
@@ -414,3 +415,4 @@ button.btn-primary:hover
   transform: scale(1.05);
   box-shadow: 0 10px 22px rgba(0,0,0,0.2);
 }
+
