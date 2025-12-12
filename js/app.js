@@ -35,8 +35,8 @@ if (window.location.pathname.includes('dashboard.html')) {
       datasets: [{
         label: 'Tasks',
         data: [completedTasks, totalTasks - completedTasks],  // Completed vs total tasks
-        backgroundColor: ['#28a745', '#FF0000;'], // Green for completed anf red for pending
-        borderColor: ['#28a745', '#FF0000;'],
+        backgroundColor: ['#28a745', '#0056b3;'], // Green for completed anf red for pending
+        borderColor: ['#28a745', '#0056b3;'],
         borderWidth: 1
       }]
     }
@@ -181,6 +181,7 @@ if (window.location.pathname.includes('completed.html')) {
   }
   renderTasks();
 }
+
 
 
 
