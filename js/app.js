@@ -1,20 +1,20 @@
-//for login.html
-document.getElementById("loginForm").addEventListener("submit", function(e) {
-  e.preventDefault();
+// Login Page 
+  function loginUser() {
+    // Get username & password
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
 
-  const username = document.getElementById("username").value;
-  const password = document.getElementById("password").value;
+    // Hardcoded user
+    const validUsername = "user";
+    const validPassword = "user123";
 
-  const validUsername = "user";
-  const validPassword = "user123";
-
-  if (username === validUsername && password === validPassword) {
-    window.location.href = "dashboard.html"; 
-  } else {
-    document.getElementById("error-message").style.display = "block";
+    if (username === validUsername && password === validPassword) {
+      // Redirect to dashboard
+      window.location.href = "dashboard.html";
+    } else {
+      document.getElementById("error-message").style.display = "block";
+    }
   }
-});
-
 
 //for dashboard.html
 if (window.location.pathname.includes('dashboard.html')) {
@@ -48,10 +48,12 @@ if (window.location.pathname.includes('dashboard.html')) {
 if (window.location.pathname.includes('tasks.html')) {
   let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
+  // Function to render tasks in the table
   function renderTasks() {
     const taskListElement = document.getElementById("taskList");
-    taskListElement.innerHTML = "";
+    taskListElement.innerHTML = ""; // Clear existing tasks
 
+    // Log the tasks to see if it's being populated correctly
     console.log('Tasks: ', tasks); 
 
     tasks.forEach((task, index) => {
@@ -70,24 +72,27 @@ if (window.location.pathname.includes('tasks.html')) {
     });
   }
 
+  // to add a new task
   function addTask() {
     const taskInput = document.getElementById("taskInput");
     const newTask = taskInput.value.trim();
 
     if (newTask) {
-      tasks.push(newTask);
-      localStorage.setItem("tasks", JSON.stringify(tasks));
-      taskInput.value = "";
+      tasks.push(newTask); // Add the new task to the tasks array
+      localStorage.setItem("tasks", JSON.stringify(tasks)); // keep the tasks array in localStorage
+      taskInput.value = ""; 
       renderTasks(); 
     } else 
+
     {
       console.log("Please enter a valid task!"); 
     }
   }
 
+  // Function to delete a task
   function deleteTask(event) {
   const index = event.target.getAttribute("data-index");
-  tasks.splice(index, 1);
+  tasks.splice(index, 1); //remove tasks
   localStorage.setItem("tasks", JSON.stringify(tasks)); 
   renderTasks();
   }
@@ -171,13 +176,6 @@ if (window.location.pathname.includes('completed.html')) {
   }
   renderTasks();
 }
-
-
-
-
-
-
-
 
 
 
