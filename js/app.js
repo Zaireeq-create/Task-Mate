@@ -48,12 +48,10 @@ if (window.location.pathname.includes('dashboard.html')) {
 if (window.location.pathname.includes('tasks.html')) {
   let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
-  // Function to render tasks in the table
   function renderTasks() {
     const taskListElement = document.getElementById("taskList");
-    taskListElement.innerHTML = ""; // Clear existing tasks
+    taskListElement.innerHTML = "";
 
-    // Log the tasks to see if it's being populated correctly
     console.log('Tasks: ', tasks); 
 
     tasks.forEach((task, index) => {
@@ -72,27 +70,24 @@ if (window.location.pathname.includes('tasks.html')) {
     });
   }
 
-  // to add a new task
   function addTask() {
     const taskInput = document.getElementById("taskInput");
     const newTask = taskInput.value.trim();
 
     if (newTask) {
-      tasks.push(newTask); // Add the new task to the tasks array
-      localStorage.setItem("tasks", JSON.stringify(tasks)); // keep the tasks array in localStorage
-      taskInput.value = ""; 
+      tasks.push(newTask);
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+      taskInput.value = "";
       renderTasks(); 
     } else 
-
     {
       console.log("Please enter a valid task!"); 
     }
   }
 
-  // Function to delete a task
   function deleteTask(event) {
   const index = event.target.getAttribute("data-index");
-  tasks.splice(index, 1); //remove tasks
+  tasks.splice(index, 1);
   localStorage.setItem("tasks", JSON.stringify(tasks)); 
   renderTasks();
   }
@@ -176,6 +171,7 @@ if (window.location.pathname.includes('completed.html')) {
   }
   renderTasks();
 }
+
 
 
 
