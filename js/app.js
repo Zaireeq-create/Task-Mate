@@ -35,7 +35,7 @@ if (window.location.pathname.includes('dashboard.html')) {
       datasets: [{
         label: 'Tasks',
         data: [completedTasks, totalTasks - completedTasks],  // Completed vs total tasks
-        backgroundColor: ['#28a745', '#0056b3;'], // Green for completed anf red for pending
+        backgroundColor: ['#28a745', '#0056b3;'], // Green for completed anf red for total
         borderColor: ['#28a745', '#0056b3;'],
         borderWidth: 1
       }]
@@ -74,24 +74,19 @@ if (window.location.pathname.includes('tasks.html')) {
 
   // to add a new task
   function addTask() {
-  const taskInput = document.getElementById("taskInput");
-  const newTask = taskInput.value.trim();
+    const taskInput = document.getElementById("taskInput");
+    const newTask = taskInput.value.trim();
 
-  if (newTask) {
-    tasks.push(newTask);
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-    taskInput.value = "";
-    renderTasks();
+    if (newTask) {
+      tasks.push(newTask); // Add the new task to the tasks array
+      localStorage.setItem("tasks", JSON.stringify(tasks)); // keep the tasks array in localStorage
+      taskInput.value = ""; 
+      renderTasks(); 
+    } else 
 
-    // Close modal after adding
-    const modal = bootstrap.Modal.getInstance(document.getElementById("addTaskModal"));
-    modal.hide();
-
-  } else {
-    console.log("Please enter a valid task!");
-  }
-}
-
+    {
+      console.log("Please enter a valid task!"); 
+    }
   }
 
   // Function to delete a task
@@ -181,9 +176,6 @@ if (window.location.pathname.includes('completed.html')) {
   }
   renderTasks();
 }
-
-
-
 
 
 
