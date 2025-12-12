@@ -38,10 +38,35 @@
     <h2 class="text-center mb-4">Tasks List</h2>
 
     <!-- Add Task Form -->
-    <div class="mb-3">
-      <input type="text" class="form-control" id="taskInput" placeholder="Enter a new task" />
-      <button class="btn btn-primary mt-2" id="addTaskBtn">Add Task</button>
-    </div>
+    <div class="mb-3 text-center">
+  <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addTaskModal">
+    Add Task
+  </button>
+</div>
+
+    <!-- Add Task Modal -->
+<div class="modal fade" id="addTaskModal" tabindex="-1">
+<div class="modal-dialog">
+<div class="modal-content">
+
+      <div class="modal-header">
+       <h5 class="modal-title">Add New Task</h5>
+       <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+      <input type="text" id="taskInput" class="form-control" placeholder="Enter a task">
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn btn-primary" id="addTaskBtn">Add Task</button>
+      </div>
+
+</div>
+</div>
+</div>
+
 
     <!-- Tasks Table -->
     <table class="table table-striped">
@@ -72,3 +97,4 @@
 </body>
 
 </html>
+
