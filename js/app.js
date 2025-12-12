@@ -74,24 +74,19 @@ if (window.location.pathname.includes('tasks.html')) {
 
   // to add a new task
   function addTask() {
-  const taskInput = document.getElementById("taskInput");
-  const newTask = taskInput.value.trim();
+    const taskInput = document.getElementById("taskInput");
+    const newTask = taskInput.value.trim();
 
-  if (newTask) {
-    tasks.push(newTask);
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-    taskInput.value = "";
-    renderTasks();
+    if (newTask) {
+      tasks.push(newTask); // Add the new task to the tasks array
+      localStorage.setItem("tasks", JSON.stringify(tasks)); // keep the tasks array in localStorage
+      taskInput.value = ""; 
+      renderTasks(); 
+    } else 
 
-    // Close modal after adding
-    const modal = bootstrap.Modal.getInstance(document.getElementById("addTaskModal"));
-    modal.hide();
-
-  } else {
-    console.log("Please enter a valid task!");
-  }
-}
-
+    {
+      console.log("Please enter a valid task!"); 
+    }
   }
 
   // Function to delete a task
@@ -181,7 +176,6 @@ if (window.location.pathname.includes('completed.html')) {
   }
   renderTasks();
 }
-
 
 
 
