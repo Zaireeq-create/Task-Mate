@@ -58,18 +58,28 @@ body
   border-color: transparent;
 }
 
-/*  navbar for mobile */
-@media (max-width: 992px) 
-{
-  .navbar-nav 
-  {
-    text-align: center;
-    width: 100%;
+/*  navbar for mobile */ 
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
   }
-  .nav-item 
-  {
-    margin-left: 0;
-    padding: 10px 0;
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  .card {
+    margin: 10px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.2rem;
+  }
+
+  .btn {
+    width: 100%;
   }
 }
 
@@ -450,3 +460,4 @@ button.btn-primary:hover
     margin-right: 10px;
   }
 }
+
