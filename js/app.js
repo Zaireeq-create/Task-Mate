@@ -158,7 +158,7 @@ if (window.location.pathname.includes('completed.html')) {
   function markAsIncomplete(event) {
     const task = event.target.getAttribute("data-task");
     completedTasks = completedTasks.filter(t => t !== task); // Remove from completed tasks
-    tasks.push(task); s
+    tasks.push(task); 
     localStorage.setItem("tasks", JSON.stringify(tasks)); 
     localStorage.setItem("completedTasks", JSON.stringify(completedTasks));  
     renderTasks(); 
@@ -176,6 +176,7 @@ if (window.location.pathname.includes('completed.html')) {
   }
   renderTasks();
 }
+
 
 
 
